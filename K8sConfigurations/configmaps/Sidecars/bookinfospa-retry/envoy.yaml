@@ -1,0 +1,80 @@
+static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          access_log:
+          - name: envoy.file_access_log
+            config:
+              path: "/tmp/access.log"
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: bookservice
+              domains:
+              - "*"
+              routes:
+              - match:
+                  prefix: "/api/BookData/" #Don't set retry on POST methods
+                  case_sensitive: false
+                  headers: 
+                  - name: ":method"
+                    exact_match: "POST"
+                route:
+                  cluster: bookservice
+                  timeout: 5s
+              - match:
+                  prefix: "/api/BookData/" #Retry on GET requests
+                  case_sensitive: false
+                  headers: 
+                  - name: ":method"
+                    exact_match: "GET"
+                route:
+                  cluster: bookservice
+                  retry_policy:
+                    retry_on: "5xx"
+                    num_retries: 3
+                  timeout: 5s
+              - match:
+                  prefix: "/" #Requests to local cluster
+                route:
+                  cluster: local_bookinfospa
+          http_filters:
+          - name: envoy.router
+            config: {}
+  clusters:
+  - name: local_bookinfospa
+    max_requests_per_connection: 1
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: 127.0.0.1
+        port_value: 8080
+  - name: bookservice
+    max_requests_per_connection: 1
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    circuit_breakers:
+      thresholds:
+        - priority: DEFAULT
+          max_retries: 500
+    hosts:
+    - socket_address:
+        address: bookservice
+        port_value: 80
+admin:
+  access_log_path: "/dev/stdout"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8081

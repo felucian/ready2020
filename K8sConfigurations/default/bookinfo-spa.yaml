@@ -1,0 +1,78 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bookinfo-spa-resiliency
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bookinfo-spa-resiliency
+    spec:
+      containers:
+      - name: bookinfo-spa
+        image:  fluciano/envoysidecar:1.0.1
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 8081
+          name: health
+        resources:
+          limits:
+            cpu: 100m
+            memory: "256M"
+        readinessProbe:
+          httpGet:
+            path: /api/warmup 
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /etc/envoy/
+          name: bookinfospasidecar  
+      - name: bookinfo-spa-backend
+        image:  fluciano/bookinfospa:1.0.2
+        env:
+        - name: VERSIONTAG
+          value: "V1-BookSpa" 
+        - name: INSTRUMENTATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: appinsightskey
+              key: instrumentationkey
+        - name: FEATUREFLAG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: featureflagkey
+              key: flagkey
+        - name: RewritePathBase
+          value: ""
+        - name: IS_RESILIENT
+          value: "true"
+        resources:
+          limits:
+            cpu: 100m
+            memory: "256M"
+      volumes: 
+      - name: bookinfospasidecar
+        configMap:
+          name: bookinfospasidecar  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookinfo-spa
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    nodePort: 30082
+  - name: stats
+    port: 8081
+    targetPort: 8081
+    nodePort: 30083
+  selector:
+    app: bookinfo-spa-resiliency

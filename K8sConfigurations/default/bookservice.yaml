@@ -1,0 +1,78 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bookservice-resiliency
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bookservice-resiliency
+    spec:
+      containers:
+      - name: bookservice-sidecar
+        image: fluciano/envoysidecar:1.0.1
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 8081
+          name: health
+        resources:
+          limits:
+            cpu: 100m
+            memory: "256M"
+        readinessProbe:
+          httpGet:
+            path: /api/warmup 
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /etc/envoy/
+          name: bookservicesidecar
+      - name: bookservice
+        image: fluciano/bookservice:1.0.9
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: VERSIONTAG
+          value: "V2.0-BookService"
+        - name: INSTRUMENTATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: appinsightskey
+              key: instrumentationkey
+        - name: FEATUREFLAG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: featureflagkey
+              key: flagkey
+        resources:
+          requests:
+            cpu: 500m
+            memory: "512M"
+          limits:
+            cpu: 600m
+            memory: "1024M"
+      volumes: 
+      - name: bookservicesidecar
+        configMap:
+          name: bookservicesidecar 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookservice
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    nodePort: 30080
+  - name: stats
+    port: 8081
+    nodePort: 30081
+  selector:
+    app: bookservice-resiliency

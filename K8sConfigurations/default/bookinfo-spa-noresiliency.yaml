@@ -1,0 +1,80 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bookinfo-spa-noresiliency
+  labels:
+    app: bookinfo-spa-noresiliency
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bookinfo-spa-noresiliency
+    spec:
+      containers:
+      - image:  fluciano/envoysidecar:1.0.1
+        imagePullPolicy: Always
+        name: bookinfo-spa-noresiliency
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 8081
+          name: health
+        resources:
+          limits:
+            cpu: 100m
+            memory: "256M"
+        readinessProbe:
+          httpGet:
+            path: /api/warmup 
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5   
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /etc/envoy/
+          name: bookinfospanoressidecar 
+      - name: bookinfo-spa-noresiliency-backend
+        image:  fluciano/bookinfospa:1.0.2
+        imagePullPolicy: Always
+        env:
+        - name: VERSIONTAG
+          value: "V1-BookSpa-noresiliency" 
+        - name: INSTRUMENTATION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: appinsightskey
+              key: instrumentationkey
+        - name: FEATUREFLAG_KEY
+          valueFrom:
+            secretKeyRef:
+              name: featureflagkey
+              key: flagkey
+        - name: RewritePathBase
+          value: ""
+        resources:
+          limits:
+            cpu: 100m
+            memory: "256M"
+      volumes: 
+      - name: bookinfospanoressidecar
+        configMap:
+          name: bookinfospanoressidecar  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookinfo-spa-noresiliency
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    nodePort: 30084
+  - name: stats
+    port: 8081
+    targetPort: 8081
+    nodePort: 30085
+  selector:
+    app: bookinfo-spa-noresiliency

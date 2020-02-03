@@ -1,0 +1,33 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5191/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/values",
+		"environmentVariables": {
+			"DATABASE_HOST": "localhost",
+			"ASPNETCORE_ENVIRONMENT": "Production",
+			"FEATUREFLAG_KEY": "sdk-02641697-246c-465d-92a0-1dad244bf6b1"
+		}
+    },
+    "BookService": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/values",
+		"environmentVariables": {
+			"DATABASE_HOST": "localhost",
+			"ASPNETCORE_ENVIRONMENT": "Production",
+			"FEATUREFLAG_KEY": "sdk-02641697-246c-465d-92a0-1dad244bf6b1"
+		},
+      "applicationUrl": "http://localhost:5192/"
+    }
+  }
+}

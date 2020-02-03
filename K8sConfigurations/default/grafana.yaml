@@ -1,0 +1,60 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:6.1.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          name: stats
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128M
+          limits: 
+            cpu: 500m
+            memory: 256M
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources/
+          name: grafanadatasource
+        - mountPath: /etc/grafana/provisioning/dashboards/
+          name: grafanaconfig         
+        - mountPath: /Dashboards/
+          name: grafanadashboards  
+        - mountPath: /etc/grafana/
+          name: grafanaini 
+      volumes:
+      - name: grafanadatasource
+        configMap:
+          name: grafanadatasource
+      - name: grafanaconfig
+        configMap:
+          name: grafanaconfig
+      - name: grafanaini
+        configMap:
+          name: grafanaini
+      - name: grafanadashboards
+        configMap:
+          name: grafanadashboards
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3000
+    nodePort: 30200
+  selector:
+    app: grafana

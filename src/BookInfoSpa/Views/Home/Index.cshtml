@@ -1,0 +1,19 @@
+@model Dictionary<string,bool>
+@{
+    ViewData["Title"] = "Home Page";
+    var bookServiceUrl = Environment.GetEnvironmentVariable("BOOKSERVICE_URL") ?? ViewData["BaseUrl"];
+    var isResilient = Environment.GetEnvironmentVariable("IS_RESILIENT") ?? "false";
+}
+<script type="text/javascript">
+    var bookInsertNewForm = @Model[Flags.BookInsertNewForm].ToString().ToLowerInvariant();
+    var bookListVisualRating = @Model[Flags.BookListVisualRating].ToString().ToLowerInvariant();
+	var bookServiceUrl = "@bookServiceUrl";
+    var isResilient = @isResilient;
+	
+</script>
+<app>Loading...</app>
+
+<script src="~/dist/vendor.js" asp-append-version="true"></script>
+@section scripts {
+    <script src="~/dist/main-client.js" asp-append-version="true"></script>
+}

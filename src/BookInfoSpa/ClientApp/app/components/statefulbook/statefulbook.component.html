@@ -1,0 +1,85 @@
+﻿<h1>Book Portal</h1>
+<span (click)="showDisplay()" class="book-title">Display</span> |
+<span (click)="showManage()" class="book-title">Manage</span>
+<div class="main-content" *ngIf="displayView">
+    <div class="book-list">
+        <h2>Books List</h2><span><em>Schema: {{ schemaVersion}} - Bin: {{ binaryVersion}} </em></span>
+        <p *ngIf="!books"><em>Loading books...</em></p>
+        <p *ngIf="!books && bookLoadingFailure"><em>Failed to retrieve book list</em></p>
+        <div *ngIf="books">
+            <div *ngFor="let book of books" class="book-item">
+                <div>
+                    Book: <span class="book-title" (click)="updateReviews(book.id)">{{ book.title}}</span>
+                </div>
+                <div>
+                    Author: <span class="additional-info">{{ book.author}}</span>
+                </div>
+                <div>
+                    Year: <span class="additional-info">{{ book.year}}</span>
+                </div>
+                <div>
+                    Price: <span class="additional-info">{{ book.price}}</span>
+                </div>
+                <div *ngIf="bookInsertNewForm">
+                    <div>
+                        Pages: <span class="additional-info">{{ book.pages}}</span>
+                    </div>
+                    <div>
+                        Gift: <span class="additional-info">{{ book.isValidForift}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="book-reviews">
+        <h2>Books Reviews</h2>
+        <p *ngIf="!reviews"><em>Loading reviews...</em></p>
+        <p *ngIf="!reviews && reviewLoadingFailure"><em>Failed to retrieve reviews for this book</em></p>
+        <div *ngIf="reviews">
+            <div *ngIf="reviews.length === 0">No reviews for this book yet</div>
+            <div class="review-item" *ngFor="let review of reviews">
+                <div>
+                    <span class=""><em><strong>{{ review.title}}</strong></em> - {{ review.author}} </span>
+                </div>
+                <div>
+                    <span class="">{{ review.description}}</span>
+                </div>
+                <div>
+                    <span class="">{{ review.rating}} stars</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="manageView">
+    <div class="bookInsert">
+        <h2>Insert Book</h2>
+        <div class="clearfix">
+            <div class="formText">Title:</div><div class="formText"><input [(ngModel)]="newBook.Title" /></div>
+        </div>
+        <div class="clearfix">
+            <div class="formText">Author: </div><div><input [(ngModel)]="newBook.Author" /></div>
+        </div>
+        <div class="clearfix">
+            <div class="formText">Year: </div><div><input [(ngModel)]="newBook.Year" /></div>
+        </div>
+        <div class="clearfix">
+            <div class="formText">Price: </div><div><input [(ngModel)]="newBook.Price" /></div>
+        </div>
+        <div *ngIf="bookInsertNewForm">
+            <div>
+                <div class="clearfix">
+                    <div class="formText">Pages: </div><div><input [(ngModel)]="newBook.Pages" /></div>
+                </div>
+            </div>
+            <div>
+                <div class="clearfix">
+                    <div class="formText">Gift: </div><div><input [(ngModel)]="newBook.IsValidForGift" /></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="formText">&nbsp;</div><div><button (click)="insertBook()">Create</button></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1340 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {
+        "2xx": "light-green",
+        "5xx": "semi-dark-red",
+        "HTTP 2xx": "light-green",
+        "HTTP 5xx": "semi-dark-red",
+        "stats.bookinfospa-noresiliency.cluster.bookservice.external.upstream_rq_200": "light-blue",
+        "stats_counts.bookinfospa-noresiliency.cluster.bookservice.external.upstream_rq_200": "light-green",
+        "stats_counts.bookinfospa-noresiliency.cluster.bookservice.external.upstream_rq_500": "semi-dark-red"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 7,
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "hideTimeOverride": true,
+      "id": 8,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": true,
+      "pluginVersion": "6.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=\"bookservice\",envoy_response_code_class=\"2\",job=\"bookinfo-spa\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "2xx",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=\"bookservice\",envoy_response_code_class=\"5\",job=\"bookinfo-spa\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "5xx",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Success Rate - Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "AVG": "light-blue",
+        "AVG Downstream": "dark-orange",
+        "AVG Upstream": "rgb(218, 221, 224)",
+        "Average": "super-light-blue",
+        "Maximum": "dark-blue",
+        "{envoy_cluster_name=\"local_bookservice\",group=\"services\",instance=\"bookservice.default.svc.cluster.local:8081\",job=\"bookservice\"}": "dark-purple"
+      },
+      "bars": false,
+      "cacheTimeout": "",
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 8,
+        "y": 0
+      },
+      "id": 15,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_external_upstream_rq_time_sum{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}[10s]) / rate(envoy_cluster_external_upstream_rq_time_count{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}[10s]) / 1000",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "AVG Downstream",
+          "refId": "D"
+        },
+        {
+          "expr": "rate(envoy_cluster_external_upstream_rq_time_sum{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice\"}[10s]) / rate(envoy_cluster_external_upstream_rq_time_count{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice\"}[10s]) / 1000",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "AVG Upstream",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Response time seconds - resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "6",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "RPS": "super-light-yellow",
+        "stats_counts.bookinfospa.cluster.bookservice.external.upstream_rq_completed": "super-light-yellow",
+        "stats_counts.bookinfospa.cluster.bookservice.upstream_cx_total": "super-light-yellow",
+        "sumSeries(stats_counts.bookinfospa.cluster.bookservice.external.upstream_rq_completed,stats_counts.bookinfospa.cluster.bookservice.upstream_rq_retry)": "super-light-yellow"
+      },
+      "bars": false,
+      "cacheTimeout": "",
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 4,
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 14,
+        "y": 0
+      },
+      "id": 16,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_total{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "RPS",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Saturation - Total RPS",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"bookservice\",group=\"services\",instance=\"bookinfo-spa.default.svc.cluster.local:8081\",job=\"bookinfo-spa\"}": "super-light-red"
+      },
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 39,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Downstream",
+          "refId": "A"
+        },
+        {
+          "expr": "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Upstream",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Active Requests - Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 14,
+        "y": 4
+      },
+      "id": 37,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{container_name=\"bookservice\",pod_name=~\"bookservice-res.*\"}[40s]) / ignoring(cpu) (container_spec_cpu_quota{container_name=\"bookservice\",pod_name=~\"bookservice-res.*\"}/container_spec_cpu_period{container_name=\"bookservice\",pod_name=~\"bookservice-res.*\"}) * 100",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "BookService",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{container_name=\"bookservice-sidecar\",pod_name=~\"bookservice-res.*\"}[40s]) / ignoring(cpu) (container_spec_cpu_quota{container_name=\"bookservice-sidecar\",pod_name=~\"bookservice-res.*\"}/container_spec_cpu_period{container_name=\"bookservice-sidecar\",pod_name=~\"bookservice-res.*\"}) * 100",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "BookService Sidecar",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{container_name=\"bookinfo-spa\",pod_name=~\"bookinfo-spa-res.*\"}[40s]) / ignoring(cpu) (container_spec_cpu_quota{container_name=\"bookinfo-spa\",pod_name=~\"bookinfo-spa-res.*\"}/container_spec_cpu_period{container_name=\"bookinfo-spa\",pod_name=~\"bookinfo-spa-res.*\"}) * 100",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "BookInfo Sidecar",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Usage - Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Downstream": "semi-dark-purple",
+        "Upstream": "semi-dark-blue",
+        "envoy_cluster_upstream_rq_pending_active{envoy_cluster_name=\"local_bookservice\",group=\"services\",instance=\"bookservice.default.svc.cluster.local:8081\",job=\"bookservice\"}": "light-blue"
+      },
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 5
+      },
+      "id": 20,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "envoy_cluster_upstream_rq_pending_active{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Downstream",
+          "refId": "A"
+        },
+        {
+          "expr": "envoy_cluster_upstream_rq_pending_active{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Upstream",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Queueing - Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "2xx": "light-green",
+        "5xx": "semi-dark-red",
+        "HTTP 2xx": "light-green",
+        "HTTP 5xx": "semi-dark-red",
+        "stats.bookinfospa-noresiliency.cluster.bookservice.external.upstream_rq_200": "light-blue",
+        "stats_counts.bookinfospa-noresiliency.cluster.bookservice.external.upstream_rq_200": "light-green",
+        "stats_counts.bookinfospa-noresiliency.cluster.bookservice.external.upstream_rq_500": "semi-dark-red"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 7,
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 10
+      },
+      "hideTimeOverride": true,
+      "id": 14,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": true,
+      "pluginVersion": "6.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=\"bookservice\",envoy_response_code_class=\"2\",job=\"bookinfo-spa-noresiliency\"}[10s])\t",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "2xx",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=\"bookservice\",envoy_response_code_class=\"5\",job=\"bookinfo-spa-noresiliency\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "5xx",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Success Rate - NO Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "AVG": "light-blue",
+        "AVG Downstream": "dark-orange",
+        "AVG Upstream": "rgb(217, 214, 208)",
+        "Average": "super-light-blue",
+        "Maximum": "dark-blue",
+        "avg(bookservice_noresiliency_cluster_local_bookservice_internal_upstream_rq_time{quantile=\"0.5\"})": "rgb(232, 236, 242)",
+        "avg(bookservice_noresiliency_cluster_local_bookservice_internal_upstream_rq_time{quantile=\"0.9\"})": "semi-dark-blue",
+        "avg(bookservice_noresiliency_cluster_local_bookservice_internal_upstream_rq_time{quantile=\"0.99\"})\n": "dark-purple"
+      },
+      "bars": false,
+      "cacheTimeout": "",
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 8,
+        "y": 10
+      },
+      "id": 17,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_time_sum{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa-noresiliency\"}[10s]) / rate(envoy_cluster_upstream_rq_time_count{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa-noresiliency\"}[10s]) / 1000",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "AVG Downstream",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(envoy_cluster_external_upstream_rq_time_sum{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice-noresiliency\"}[10s]) / rate(envoy_cluster_external_upstream_rq_time_count{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice-noresiliency\"}[10s]) / 1000",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "AVG Upstream",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Response time seconds - NO resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "6",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "stats_counts.bookinfospa.cluster.bookservice.external.upstream_rq_completed": "super-light-yellow",
+        "stats_counts.bookinfospa.cluster.bookservice.upstream_cx_total": "super-light-yellow",
+        "sumSeries(stats_counts.bookinfospa.cluster.bookservice.external.upstream_rq_completed,stats_counts.bookinfospa.cluster.bookservice.upstream_rq_retry)": "super-light-yellow",
+        "{envoy_cluster_name=\"bookservice\",group=\"services\",instance=\"bookinfo-spa-noresiliency.default.svc.cluster.local:8081\",job=\"bookinfo-spa-noresiliency\"}": "super-light-yellow"
+      },
+      "bars": false,
+      "cacheTimeout": "",
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 4,
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 14,
+        "y": 10
+      },
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_total{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa-noresiliency\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Saturation - Total RPS",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"bookservice\",group=\"services\",instance=\"bookinfo-spa-noresiliency.default.svc.cluster.local:8081\",job=\"bookinfo-spa-noresiliency\"}": "super-light-red",
+        "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"bookservice\",group=\"services\",instance=\"bookinfo-spa.default.svc.cluster.local:8081\",job=\"bookinfo-spa\"}": "super-light-red"
+      },
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 10
+      },
+      "id": 41,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa-noresiliency\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Downstream",
+          "refId": "A"
+        },
+        {
+          "expr": "envoy_cluster_upstream_rq_active{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice-noresiliency\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Upstream",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Active Requests - NO Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 14,
+        "y": 14
+      },
+      "id": 43,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{container_name=\"bookservice\",pod_name=~\"bookservice-nores.*\"}[40s]) / ignoring(cpu) (container_spec_cpu_quota{container_name=\"bookservice\",pod_name=~\"bookservice-nores+.*\"}/container_spec_cpu_period{container_name=\"bookservice\",pod_name=~\"bookservice-nores.*\"}) * 100",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "BookService",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{container_name=\"bookservice-sidecar\",pod_name=~\"bookservice-nores.*\"}[40s]) / ignoring(cpu) (container_spec_cpu_quota{container_name=\"bookservice-sidecar\",pod_name=~\"bookservice-nores+.*\"}/container_spec_cpu_period{container_name=\"bookservice-sidecar\",pod_name=~\"bookservice-nores.*\"}) * 100",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "BookService Sidecar",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{container_name=\"bookinfo-spa-noresiliency\",pod_name=~\"bookinfo-spa-noresiliency.*\"}[40s]) / ignoring(cpu) (container_spec_cpu_quota{container_name=\"bookinfo-spa-noresiliency\",pod_name=~\"bookinfo-spa-noresiliency.*\"}/container_spec_cpu_period{container_name=\"bookinfo-spa-noresiliency\",pod_name=~\"bookinfo-spa-noresiliency.*\"}) * 100",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "BookInfo Sidecar",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Usage - NO Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Downstream": "semi-dark-purple",
+        "Upstream": "semi-dark-blue",
+        "envoy_cluster_upstream_rq_pending_active{envoy_cluster_name=\"local_bookservice\",group=\"services\",instance=\"bookservice.default.svc.cluster.local:8081\",job=\"bookservice\"}": "light-blue"
+      },
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 15
+      },
+      "id": 42,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "envoy_cluster_upstream_rq_pending_active{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa-noresiliency\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Downstream",
+          "refId": "A"
+        },
+        {
+          "expr": "envoy_cluster_upstream_rq_pending_active{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice-noresiliency\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Upstream",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Queueing - No Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 20
+      },
+      "id": 44,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_pending_overflow{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Downstream Pending",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_retry_overflow{envoy_cluster_name=\"bookservice\",group=\"services\",job=\"bookinfo-spa\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Downstream Retry",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(envoy_cluster_upstream_rq_pending_overflow{envoy_cluster_name=\"local_bookservice\",group=\"services\",job=\"bookservice\"}[10s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Upstream Pending",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Overflows - Resiliency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "1s",
+  "schemaVersion": 18,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "1s",
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "BookInfo Board",
+  "uid": "t98OqLRWm",
+  "version": 1
+}

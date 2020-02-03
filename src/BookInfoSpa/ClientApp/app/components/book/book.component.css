@@ -1,0 +1,37 @@
+﻿.main-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.book-list {
+    width: 30%;
+    flex-grow: 0;
+}
+.book-list h2{
+    display: inline-block;
+}
+.book-list span.refresh{
+    cursor: pointer;
+}
+
+.book-reviews {
+    width: 60%;
+    flex-grow: 0;
+}
+
+.book-item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.book-title {
+    font-weight: bold;
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
+.review-item {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+ 
